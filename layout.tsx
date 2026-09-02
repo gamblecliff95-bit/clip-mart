@@ -1,0 +1,1 @@
+import "./styles.css"; export const metadata={title:"Clip-Mart — Video Marketplace",description:"Buy and sell premium videos on Clip-Mart."}; export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}

@@ -1,0 +1,7 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+enum Role { CUSTOMER CREATOR ADMIN }
+enum VideoStatus { DRAFT PENDING_REVIEW PUBLISHED REJECTED }
+model User { id String @id @default(cuid()) email String @unique name String? role Role @default(CUSTOMER) stripeAccountId String? createdAt DateTime @default(now()) videos Video[] purchases Purchase[] }
+model Video { id String @id @default(cuid()) creatorId String creator User @relation(fields:[creatorId],references:[id]) title String description String category String priceCents Int thumbnailKey String? videoKey String? previewKey String? status VideoStatus @default(DRAFT) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt purchases Purchase[] }
+model Purchase { id String @id @default(cuid()) customerId String videoId String stripePaymentIntentId String? @unique amountCents Int platformFeeCents Int creatorAmountCents Int createdAt DateTime @default(now()) customer User @relation(fields:[customerId],references:[id]) video Video @relation(fields:[videoId],references:[id]) @@unique([customerId,videoId]) }
